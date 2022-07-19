@@ -1,6 +1,6 @@
 # OrtoSmart
 Repository per il workshop di monitoraggio ambientale di Place Me Now
-
+![locandina](locandina.jpg)
 ## Setup ESP32
 Per questo workshop utilizziamo ESP32 con il framework Arduino. Questi sono gli step da seguire:
 
