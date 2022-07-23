@@ -11,11 +11,6 @@
 #include "secrets.h"
 
 
-// InfluxDB v2 server url, e.g. https://eu-central-1-1.aws.cloud2.influxdata.com (Use: InfluxDB UI -> Load Data -> Client Libraries)
-#define INFLUXDB_URL "https://eu-central-1-1.aws.cloud2.influxdata.com"
-// InfluxDB v2 bucket name (Use: InfluxDB UI ->  Data -> Buckets)
-#define INFLUXDB_BUCKET "orto"
-
 // Set timezone string according to https://www.gnu.org/software/libc/manual/html_node/TZ-Variable.html
 // Examples:
 //  Pacific Time: "PST8PDT"
@@ -68,10 +63,10 @@ void setup() {
 
   // Check server connection
   if (client.validateConnection()) {
-    Serial.print("Connected to InfluxDB: ");
+    Serial.print("Connesso a InfluxDB: ");
     Serial.println(client.getServerUrl());
   } else {
-    Serial.print("InfluxDB connection failed: ");
+    Serial.print("Connessione fallita a InfluxDB: ");
     Serial.println(client.getLastErrorMessage());
   }
 }
@@ -82,19 +77,19 @@ void loop() {
   // Report RSSI of currently connected network
   datapoint.addField("rssi", WiFi.RSSI());
   // Print what are we exactly writing
-  Serial.print("Writing: ");
+  Serial.print("Scrittura: ");
   Serial.println(client.pointToLineProtocol(datapoint));
   // If no Wifi signal, try to reconnect it
   if (WiFi.status() != WL_CONNECTED) {
-    Serial.println("Wifi connection lost");
+    Serial.println("Persa connessione WiFi");
   }
   // Write point
   if (!client.writePoint(datapoint)) {
-    Serial.print("InfluxDB write failed: ");
+    Serial.print("Scrittura InfluxDB fallita: ");
     Serial.println(client.getLastErrorMessage());
   }
 
-  //Wait 10s
-  Serial.println("Wait 1s");
+  //Wait 1s
+  Serial.println("delay 1s");
   delay(1000);
 }
