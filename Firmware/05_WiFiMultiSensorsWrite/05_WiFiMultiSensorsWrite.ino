@@ -4,7 +4,7 @@
  **/
 
 
-#include <WiFiManager.h> // https://github.com/tzapu/WiFiManager 
+#include <WiFiManager.h> // https://github.com/tzapu/WiFiManager @ 7d498ed
 
 #include <InfluxDbClient.h>
 #include <InfluxDbCloud.h>
@@ -51,23 +51,19 @@ void setup() {
   Wire.begin();
   lightMeter.begin();
   // password protected ap    
+  wifiManager.setConfigPortalTimeout(30);
   bool result;    
   result = wifiManager.autoConnect("OrtoSmart-1","password"); 
 
   if(!result) {
       Serial.println("Non connesso :(");
-      esp_sleep_enable_timer_wakeup(6e6); // sleep for 60 seconds
+      esp_sleep_enable_timer_wakeup(6e7); // sleep for 60 seconds and reset
       esp_deep_sleep_start();
   } 
   else {
       //if you get here you have connected to the WiFi    
       Serial.println("Connesso :)");
   }
-
-
-  // Add tags
-  datapoint.addTag("device", "sensore-1");
-  datapoint.addTag("SSID", WiFi.SSID());
 
   // Accurate time is necessary for certificate validation and writing in batches
   // For the fastest time sync find NTP servers in your area: https://www.pool.ntp.org/zone/

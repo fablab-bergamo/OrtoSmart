@@ -18,7 +18,8 @@ void setup() {
     // preload wifi credentials if known
     // wifiManager.preloadWiFi(WIFI_SSID, WIFI_PASS);
 
-    // password protected ap    
+    // password protected ap
+    wifiManager.setConfigPortalTimeout(30); 
     bool result;    
     result = wifiManager.autoConnect("OrtoSmart-1","password"); 
 

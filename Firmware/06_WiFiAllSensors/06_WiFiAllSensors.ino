@@ -4,7 +4,7 @@
  **/
 
 
-#include <WiFiManager.h> // https://github.com/tzapu/WiFiManager 
+#include <WiFiManager.h> // https://github.com/tzapu/WiFiManager @ 7d498ed
 
 #include <InfluxDbClient.h>
 #include <InfluxDbCloud.h>
@@ -64,7 +64,7 @@ void setup() {
 
   if(!result) {
       Serial.println("Non connesso :(");
-      esp_sleep_enable_timer_wakeup(6e6); // sleep for 60 seconds and reset
+      esp_sleep_enable_timer_wakeup(6e7); // sleep for 60 seconds and reset
       esp_deep_sleep_start();
   } 
   else {
@@ -84,7 +84,7 @@ void setup() {
   } else {
     Serial.print("Connessione fallita a InfluxDB: ");
     Serial.println(client.getLastErrorMessage());
-    esp_sleep_enable_timer_wakeup(6e6); // sleep for 60 seconds
+    esp_sleep_enable_timer_wakeup(6e7); // sleep for 60 seconds
     esp_deep_sleep_start();
   }
 }

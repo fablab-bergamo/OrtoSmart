@@ -35,16 +35,18 @@ void setup() {
   //WiFiManager, Local intialization. Once its business is done, there is no need to keep it around
   WiFiManager wifiManager;
 
-  // preload wifi credentials if known
-  wifiManager.preloadWiFi(WIFI_SSID, WIFI_PASS);
+  // DEBUG ONLY
+  // wifiManager.preloadWiFi(WIFI_SSID, WIFI_PASS);
 
   // password protected ap    
+  wifiManager.setConfigPortalTimeout(30);
   bool result;    
   result = wifiManager.autoConnect("OrtoSmart-1","password"); 
 
   if(!result) {
       Serial.println("Non connesso :(");
-      while(1);
+      esp_sleep_enable_timer_wakeup(6e7); // sleep for 60 seconds and reset
+      esp_deep_sleep_start();
   } 
   else {
       //if you get here you have connected to the WiFi    
@@ -68,6 +70,8 @@ void setup() {
   } else {
     Serial.print("Connessione fallita a InfluxDB: ");
     Serial.println(client.getLastErrorMessage());
+    esp_sleep_enable_timer_wakeup(6e7); // sleep for 60 seconds
+    esp_deep_sleep_start();
   }
 }
 
@@ -89,6 +93,6 @@ void loop() {
     Serial.println(client.getLastErrorMessage());
   }
 
-  esp_sleep_enable_timer_wakeup(10000000); // 1 second
+  esp_sleep_enable_timer_wakeup(1 * 1e6); // 1 second * 1e6 = 1000000 us 
   esp_deep_sleep_start();
 }

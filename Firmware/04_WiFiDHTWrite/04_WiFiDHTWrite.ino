@@ -4,7 +4,7 @@
  **/
 
 
-#include <WiFiManager.h> // https://github.com/tzapu/WiFiManager 
+#include <WiFiManager.h> // https://github.com/tzapu/WiFiManager @ 7d498ed
 
 #include <InfluxDbClient.h>
 #include <InfluxDbCloud.h>
@@ -44,12 +44,14 @@ void setup() {
   // wifiManager.preloadWiFi(WIFI_SSID, WIFI_PASS);
 
   // password protected ap    
+  wifiManager.setConfigPortalTimeout(30);
   bool result;    
   result = wifiManager.autoConnect("OrtoSmart-1","password"); 
 
   if(!result) {
       Serial.println("Non connesso :(");
-      while(1);
+      esp_sleep_enable_timer_wakeup(6e7); // sleep for 60 seconds and reset
+      esp_deep_sleep_start();
   } 
   else {
       //if you get here you have connected to the WiFi    
@@ -73,6 +75,8 @@ void setup() {
   } else {
     Serial.print("Connessione fallita a InfluxDB: ");
     Serial.println(client.getLastErrorMessage());
+    esp_sleep_enable_timer_wakeup(6e7); // sleep for 60 seconds
+    esp_deep_sleep_start();
   }
 }
 
@@ -81,7 +85,8 @@ void loop() {
   datapoint.clearFields();
   // Report RSSI of currently connected network
   datapoint.addField("rssi", WiFi.RSSI());
-    int chk = DHT.read11(DHT11_PIN);
+  
+  int chk = DHT.read11(DHT11_PIN);
   if (chk == DHTLIB_OK){
       datapoint.addField("temperature", DHT.getTemperature());
       datapoint.addField("humidity", DHT.getHumidity());
@@ -101,6 +106,6 @@ void loop() {
     Serial.println(client.getLastErrorMessage());
   }
 
-  esp_sleep_enable_timer_wakeup(10 * 1e6); // 10 second * 1e6 = 1000000 microseconds
+  esp_sleep_enable_timer_wakeup(1 * 1e6); // 10 second * 1e6 = 1000000 microseconds
   esp_deep_sleep_start();
 }
