@@ -4,11 +4,21 @@
  **/
 
 
-#include <WiFiManager.h> // https://github.com/tzapu/WiFiManager @ 7d498ed
+#include <WiFiManager.h> // https://github.com/tzapu/WiFiManager 
 
 #include <InfluxDbClient.h>
 #include <InfluxDbCloud.h>
 #include "secrets.h"
+
+
+#include <DHTStable.h>
+DHTStable DHT;
+#define DHT11_PIN 4
+
+#include <BH1750.h>
+#include <Wire.h>
+
+BH1750 lightMeter;
 
 
 // Set timezone string according to https://www.gnu.org/software/libc/manual/html_node/TZ-Variable.html
@@ -35,16 +45,19 @@ void setup() {
   //WiFiManager, Local intialization. Once its business is done, there is no need to keep it around
   WiFiManager wifiManager;
 
-  // preload wifi credentials if known
-  wifiManager.preloadWiFi(WIFI_SSID, WIFI_PASS);
+  // DEBUG ONLY
+  // wifiManager.preloadWiFi(WIFI_SSID, WIFI_PASS);
 
+  Wire.begin();
+  lightMeter.begin();
   // password protected ap    
   bool result;    
   result = wifiManager.autoConnect("OrtoSmart-1","password"); 
 
   if(!result) {
       Serial.println("Non connesso :(");
-      while(1);
+      esp_sleep_enable_timer_wakeup(6e6); // sleep for 60 seconds
+      esp_deep_sleep_start();
   } 
   else {
       //if you get here you have connected to the WiFi    
@@ -68,6 +81,8 @@ void setup() {
   } else {
     Serial.print("Connessione fallita a InfluxDB: ");
     Serial.println(client.getLastErrorMessage());
+    esp_sleep_enable_timer_wakeup(6e6); // sleep for 60 seconds
+    esp_deep_sleep_start();
   }
 }
 
@@ -76,6 +91,23 @@ void loop() {
   datapoint.clearFields();
   // Report RSSI of currently connected network
   datapoint.addField("rssi", WiFi.RSSI());
+  
+  int chk = DHT.read11(DHT11_PIN);
+  if (chk == DHTLIB_OK){
+      datapoint.addField("temperature", DHT.getTemperature());
+      datapoint.addField("humidity", DHT.getHumidity());
+  } else {
+      Serial.print("DHT error\n"); 
+  }
+
+  if (lightMeter.measurementReady()) {
+    float lux = lightMeter.readLightLevel();
+    Serial.print("Light: ");
+    Serial.print(lux);
+    Serial.println(" lx\n");
+    datapoint.addField("light", lux);
+  }
+
   // Print what are we exactly writing
   Serial.print("Scrittura: ");
   Serial.println(client.pointToLineProtocol(datapoint));
@@ -89,7 +121,6 @@ void loop() {
     Serial.println(client.getLastErrorMessage());
   }
 
-  //Wait 1s
-  Serial.println("delay 1s");
-  delay(1000);
+  esp_sleep_enable_timer_wakeup(1 * 1e6); // 10 second * 1e6 = 1000000 microseconds
+  esp_deep_sleep_start();
 }
