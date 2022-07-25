@@ -18,10 +18,21 @@ Richiede un po' di tempo e una connessione a internet
 ### Installazione delle librerie
 #### WiFiManager
 Questa è una libreria in fase di sviluppo e va quindi installata manualmente. 
+1.  Apri la pagina github della libreria [tzapu/WiFiManager](https://github.com/tzapu/WiFiManager/tree/7d498ed50ab92577ecbd0c5ba2b875910356d1ce)
+1. Scarica i file: `Code -> Download ZIP`
+1. Carica la libreria come ZIP dall'IDE Arduino: `Sketch -> #include libreria -> Aggiungi libreria da file ZIP`
 
-
-
+#### InfluxDBClient, DHTStable, BH1750, BMP280_DEV
+Tutte le altre librerie che useremo sono in versione stabile e possono essere installate direttamente dal library manager di Arduino.
+1. Installa la libreria dal library manager: `Sketch -> #include libreria -> Gestore librerie`
+1. Digita nella barra di ricerca `InfluxDB` e installa la libreria `ESP8266 Influxdb` di Tobias Schuerg v3.12.0
+1. Digita nella barra di ricerca `DHTStable` e installa la libreria `DHTStable` di Rob Tillaart v1.1.1
+1. Digita nella barra di ricerca `BH1750` e installa la libreria `BH1750` di Christopher Laws v1.3.0
+1. Digita nella barra di ricerca `BMP280_DEV` e installa la libreria `BMP280_DEV` di Martin Lindupp v1.0.21
 
 ## Caricamento Firmware
+Quando faremo riferimento al caricamento del firmware, se dovessi avere dubbi segui questa procedura: 
 1. Seleziona la scheda ESP32: `Strumenti -> Scheda -> ESP32 Arduino -> ESP32 Dev Module`
 1. Seleziona la porta COM corretta: `Strumenti -> Scheda -> Porta -> COMxx` (sostituisci xx col numer corretto. Se ce ne sono diverse e non sai quale sia, scollega la scheda e vedi quale scompare)
+
+
