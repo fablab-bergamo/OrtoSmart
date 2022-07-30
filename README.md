@@ -1,6 +1,6 @@
 # OrtoSmart
 Repository per il workshop di monitoraggio ambientale di Place Me Now
-![locandina](locandina.jpg)
+![locandina](img/locandina.jpg)
 ## Setup ESP32
 Per questo workshop utilizziamo ESP32 con il framework Arduino. Questi sono gli step da seguire:
 
@@ -34,5 +34,11 @@ Tutte le altre librerie che useremo sono in versione stabile e possono essere in
 Quando faremo riferimento al caricamento del firmware, se dovessi avere dubbi segui questa procedura: 
 1. Seleziona la scheda ESP32: `Strumenti -> Scheda -> ESP32 Arduino -> ESP32 Dev Module`
 1. Seleziona la porta COM corretta: `Strumenti -> Scheda -> Porta -> COMxx` (sostituisci xx col numer corretto. Se ce ne sono diverse e non sai quale sia, scollega la scheda e vedi quale scompare)
+
+![pannello](img/pannello.jpg)
+
+![internals](img/internals.jpg)
+
+![sensor](img/sensor.jpg)
 
 
