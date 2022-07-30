@@ -35,6 +35,7 @@ Quando faremo riferimento al caricamento del firmware, se dovessi avere dubbi se
 1. Seleziona la scheda ESP32: `Strumenti -> Scheda -> ESP32 Arduino -> ESP32 Dev Module`
 1. Seleziona la porta COM corretta: `Strumenti -> Scheda -> Porta -> COMxx` (sostituisci xx col numer corretto. Se ce ne sono diverse e non sai quale sia, scollega la scheda e vedi quale scompare)
 
+## Foto
 ![dashboard](img/dashboard.png)
 
 ![pannello](img/pannello.png)
